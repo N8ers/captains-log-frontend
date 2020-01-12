@@ -2,6 +2,7 @@ import React from "react";
 
 import NewLog from "./NewLog";
 import Log from "./Log";
+import "./Logs.css";
 
 class Logs extends React.Component {
   render() {
@@ -12,7 +13,7 @@ class Logs extends React.Component {
     ];
 
     return (
-      <div>
+      <div className="logsBody">
         <NewLog></NewLog>
 
         {dummyLogs.map(log => (
@@ -23,6 +24,7 @@ class Logs extends React.Component {
             content={log.content}
           />
         ))}
+        <br />
       </div>
     );
   }
