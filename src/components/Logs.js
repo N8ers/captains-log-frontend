@@ -14,7 +14,7 @@ class Logs extends React.Component {
 
     return (
       <div className="logsBody">
-        <NewLog></NewLog>
+        {this.props.btnState.newLogClicked && <NewLog></NewLog>}
 
         {dummyLogs.map(log => (
           <Log

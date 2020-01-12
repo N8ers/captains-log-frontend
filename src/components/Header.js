@@ -2,13 +2,26 @@ import React from "react";
 
 import "./Header.css";
 
-function Header() {
-  return (
-    <div className="header">
-      <h1>Captain's Log</h1>
-      <button>dummy button</button>
-    </div>
-  );
+class Header extends React.Component {
+  render() {
+    return (
+      <div className="header">
+        <h1>Captain's Log</h1>
+        {!this.props.btnState.newLogClicked && (
+          <div>
+            <button onClick={this.props.newLogClicked}>Create New Log</button>
+          </div>
+        )}
+
+        {this.props.btnState.newLogClicked && (
+          <div>
+            <button onClick={this.props.newLogClicked}>Store Log</button>
+            <button onClick={this.props.newLogClicked}>Scrap Log</button>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 export default Header;

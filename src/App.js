@@ -5,13 +5,32 @@ import Logs from "./components/Logs";
 
 import "./App.css";
 
-function App() {
-  return (
-    <div>
-      <Header></Header>
-      <Logs></Logs>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      newLogClicked: false
+    };
+    this.handleNewLogToggle = this.handleNewLogToggle.bind(this);
+  }
+
+  handleNewLogToggle() {
+    this.setState({
+      newLogClicked: !this.state.newLogClicked
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Header
+          newLogClicked={this.handleNewLogToggle}
+          btnState={this.state}
+        ></Header>
+        <Logs btnState={this.state}></Logs>
+      </div>
+    );
+  }
 }
 
 export default App;
