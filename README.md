@@ -1,4 +1,4 @@
-#Captain's Log (Frontend)
+# Captain's Log (Frontend)
 
 have you ever needed to capture the finer details of you adventures?
 track your thoughts, in this convenient log.
