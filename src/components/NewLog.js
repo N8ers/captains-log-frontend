@@ -12,7 +12,7 @@ class NewLog extends React.Component {
             className="test"
             aria-label="minimum height"
             rowsMin={8}
-            placeholder="Minimum 3 rows"
+            placeholder="captain's log..."
           />
         </form>
       </div>

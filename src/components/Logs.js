@@ -6,22 +6,18 @@ import "./Logs.css";
 
 class Logs extends React.Component {
   render() {
-    const dummyLogs = [
-      { id: 1, starDate: 123, content: "ahhhhhhhhhh" },
-      { id: 2, starDate: 637, content: "guhhhhhaj" },
-      { id: 3, starDate: 987, content: "asdfff" }
-    ];
-
     return (
       <div className="logsBody">
         {this.props.btnState.newLogClicked && <NewLog></NewLog>}
 
-        {dummyLogs.map(log => (
+        {this.props.dummyLogs.map(log => (
           <Log
-            key={log.key}
+            key={log.id}
             id={log.id}
             starDate={log.starDate}
             content={log.content}
+            handleEditLog={this.props.handleEditLog}
+            handleDeleteLog={this.props.handleDeleteLog}
           />
         ))}
         <br />

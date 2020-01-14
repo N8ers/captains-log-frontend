@@ -3,6 +3,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
 import Grid from "@material-ui/core/Grid";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 
 import "./Log.css";
 
@@ -17,17 +18,27 @@ class Log extends React.Component {
             </div>
           </Grid>
           <Grid item xs={1}>
-            <button>
+            <button onClick={this.props.handleEditLog}>
               <FontAwesomeIcon icon={faEdit} />
             </button>
           </Grid>
           <Grid item xs={1}>
-            <button>
+            <button onClick={this.props.handleDeleteLog}>
               <FontAwesomeIcon icon={faTimesCircle} />
             </button>
           </Grid>
         </Grid>
-        <p>{this.props.content}</p>
+        {!this.props.logInEditMode && <p>{this.props.content}</p>}
+        {this.props.logInEditMode && (
+          <form>
+            <TextareaAutosize
+              className="test"
+              aria-label="minimum height"
+              rowsMin={8}
+              placeholder={this.props.content}
+            />
+          </form>
+        )}
       </div>
     );
   }

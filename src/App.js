@@ -9,15 +9,43 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      newLogClicked: false
+      newLogClicked: false,
+      logInEditMode: false,
+      dummyLogs: [
+        { id: 1, starDate: 123, content: "ahhhhhhhhhh" },
+        { id: 2, starDate: 637, content: "guhhhhhaj" },
+        { id: 3, starDate: 987, content: "asdfff" }
+      ]
     };
     this.handleNewLogToggle = this.handleNewLogToggle.bind(this);
+    this.handleEditLog = this.handleEditLog.bind(this);
   }
 
   handleNewLogToggle() {
     this.setState({
       newLogClicked: !this.state.newLogClicked
     });
+  }
+
+  handleScrapLog() {
+    console.log("handleScrapLog called...");
+    this.handleNewLogToggle();
+  }
+
+  handleStoreLog() {
+    console.log("handleStoreLog called...");
+    this.handleNewLogToggle();
+  }
+
+  handleEditLog() {
+    console.log("handleEditLog");
+    this.setState({
+      logInEditMode: !this.state.logInEditMode
+    });
+  }
+
+  handleDeleteLog() {
+    console.log("handleDeleteLog called...");
   }
 
   render() {
@@ -27,7 +55,12 @@ class App extends React.Component {
           newLogClicked={this.handleNewLogToggle}
           btnState={this.state}
         ></Header>
-        <Logs btnState={this.state}></Logs>
+        <Logs
+          dummyLogs={this.state.dummyLogs}
+          btnState={this.state}
+          handleEditLog={this.handleEditLog}
+          handleDeleteLog={this.handleDeleteLog}
+        ></Logs>
       </div>
     );
   }
