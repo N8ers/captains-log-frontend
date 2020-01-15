@@ -10,7 +10,6 @@ class App extends React.Component {
     super(props);
     this.state = {
       newLogClicked: false,
-      logInEditMode: false,
       dummyLogs: [
         { id: 1, starDate: 123, content: "ahhhhhhhhhh" },
         { id: 2, starDate: 637, content: "guhhhhhaj" },
@@ -18,7 +17,9 @@ class App extends React.Component {
       ]
     };
     this.handleNewLogToggle = this.handleNewLogToggle.bind(this);
-    this.handleEditLog = this.handleEditLog.bind(this);
+    this.handleDeleteLog = this.handleDeleteLog.bind(this);
+    this.handleScrapLog = this.handleScrapLog.bind(this);
+    this.handleStoreLog = this.handleStoreLog.bind(this);
   }
 
   handleNewLogToggle() {
@@ -32,20 +33,23 @@ class App extends React.Component {
     this.handleNewLogToggle();
   }
 
-  handleStoreLog() {
+  handleStoreLog(newLog) {
     console.log("handleStoreLog called...");
+    let newLogs = this.state.dummyLogs.concat({
+      id: 4,
+      starDate: 42069,
+      content: newLog
+    });
+    this.setState({
+      dummyLogs: newLogs
+    });
     this.handleNewLogToggle();
   }
 
-  handleEditLog() {
-    console.log("handleEditLog");
+  handleDeleteLog(id) {
     this.setState({
-      logInEditMode: !this.state.logInEditMode
+      dummyLogs: this.state.dummyLogs.filter(log => log.id !== id)
     });
-  }
-
-  handleDeleteLog() {
-    console.log("handleDeleteLog called...");
   }
 
   render() {
@@ -60,6 +64,8 @@ class App extends React.Component {
           btnState={this.state}
           handleEditLog={this.handleEditLog}
           handleDeleteLog={this.handleDeleteLog}
+          storeLog={this.handleStoreLog}
+          scrapLog={this.handleScrapLog}
         ></Logs>
       </div>
     );

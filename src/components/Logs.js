@@ -6,9 +6,15 @@ import "./Logs.css";
 
 class Logs extends React.Component {
   render() {
+    console.log(this.props);
     return (
       <div className="logsBody">
-        {this.props.btnState.newLogClicked && <NewLog></NewLog>}
+        {this.props.btnState.newLogClicked && (
+          <NewLog
+            scrapLog={this.props.scrapLog}
+            storeLog={this.props.storeLog}
+          />
+        )}
 
         {this.props.dummyLogs.map(log => (
           <Log

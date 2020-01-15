@@ -13,12 +13,7 @@ class Header extends React.Component {
           </div>
         )}
 
-        {this.props.btnState.newLogClicked && (
-          <div>
-            <button onClick={this.props.newLogClicked}>Store Log</button>
-            <button onClick={this.props.newLogClicked}>Scrap Log</button>
-          </div>
-        )}
+        {this.props.btnState.newLogClicked && <div></div>}
       </div>
     );
   }

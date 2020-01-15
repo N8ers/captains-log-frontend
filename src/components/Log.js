@@ -8,6 +8,21 @@ import TextareaAutosize from "@material-ui/core/TextareaAutosize";
 import "./Log.css";
 
 class Log extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      logInEditMode: false
+    };
+    this.handleEditLog = this.handleEditLog.bind(this);
+  }
+
+  handleEditLog() {
+    console.log("handleeditlog");
+    this.setState({
+      logInEditMode: !this.state.logInEditMode
+    });
+  }
+
   render() {
     return (
       <div className="logBody">
@@ -18,18 +33,18 @@ class Log extends React.Component {
             </div>
           </Grid>
           <Grid item xs={1}>
-            <button onClick={this.props.handleEditLog}>
+            <button onClick={this.handleEditLog}>
               <FontAwesomeIcon icon={faEdit} />
             </button>
           </Grid>
           <Grid item xs={1}>
-            <button onClick={this.props.handleDeleteLog}>
+            <button onClick={() => this.props.handleDeleteLog(this.props.id)}>
               <FontAwesomeIcon icon={faTimesCircle} />
             </button>
           </Grid>
         </Grid>
-        {!this.props.logInEditMode && <p>{this.props.content}</p>}
-        {this.props.logInEditMode && (
+        {!this.state.logInEditMode && <p>{this.props.content}</p>}
+        {this.state.logInEditMode && (
           <form>
             <TextareaAutosize
               className="test"
