@@ -10,10 +10,11 @@ class App extends React.Component {
     super(props);
     this.state = {
       newLogClicked: false,
+      tempLogId: 4,
       dummyLogs: [
-        { id: 1, starDate: 123, content: "ahhhhhhhhhh" },
-        { id: 2, starDate: 637, content: "guhhhhhaj" },
-        { id: 3, starDate: 987, content: "asdfff" }
+        { id: 1, starDate: 1677537989, content: "ahhhhhhhhhh" },
+        { id: 2, starDate: 1479137234, content: "guhhhhhaj" },
+        { id: 3, starDate: 1179137946, content: "asdfff" }
       ]
     };
     this.handleNewLogToggle = this.handleNewLogToggle.bind(this);
@@ -36,12 +37,13 @@ class App extends React.Component {
   handleStoreLog(newLog) {
     console.log("handleStoreLog called...");
     let newLogs = this.state.dummyLogs.concat({
-      id: 4,
-      starDate: 42069,
+      id: this.state.tempLogId,
+      starDate: Math.floor(Date.now() / 1000),
       content: newLog
     });
     this.setState({
-      dummyLogs: newLogs
+      dummyLogs: newLogs,
+      tempLogId: this.state.tempLogId + 1
     });
     this.handleNewLogToggle();
   }
