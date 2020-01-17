@@ -21,6 +21,7 @@ class App extends React.Component {
     this.handleDeleteLog = this.handleDeleteLog.bind(this);
     this.handleScrapLog = this.handleScrapLog.bind(this);
     this.handleStoreLog = this.handleStoreLog.bind(this);
+    this.handleEditLog = this.handleEditLog.bind(this);
   }
 
   handleNewLogToggle() {
@@ -54,6 +55,20 @@ class App extends React.Component {
     });
   }
 
+  handleEditLog(id, content) {
+    let oldLogs = this.state.dummyLogs;
+
+    for (let i = 0; i < oldLogs.length; i++) {
+      if (oldLogs[i].id === id) {
+        oldLogs[i].content = content;
+      }
+    }
+
+    this.setState({
+      dummyLogs: oldLogs
+    });
+  }
+
   render() {
     return (
       <div>
@@ -68,6 +83,7 @@ class App extends React.Component {
           handleDeleteLog={this.handleDeleteLog}
           storeLog={this.handleStoreLog}
           scrapLog={this.handleScrapLog}
+          editLog={this.handleEditLog}
         ></Logs>
       </div>
     );

@@ -11,15 +11,28 @@ class Log extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      logInEditMode: false
+      logInEditMode: false,
+      logContent: this.props.content
     };
     this.handleEditLog = this.handleEditLog.bind(this);
+    this.handleEditingLog = this.handleEditingLog.bind(this);
   }
 
   handleEditLog() {
     console.log("handleeditlog");
     this.setState({
       logInEditMode: !this.state.logInEditMode
+    });
+  }
+
+  handleSaveEdit(id, content) {
+    this.props.handleEditLog(id, content);
+    this.handleEditLog();
+  }
+
+  handleEditingLog(e) {
+    this.setState({
+      logContent: e.target.value
     });
   }
 
@@ -32,11 +45,26 @@ class Log extends React.Component {
               Captain's Log - stardate: {this.props.starDate}
             </div>
           </Grid>
-          <Grid item xs={1}>
-            <button onClick={this.handleEditLog}>
-              <FontAwesomeIcon icon={faEdit} />
-            </button>
-          </Grid>
+
+          {this.state.logInEditMode && (
+            <Grid item xs={1}>
+              <button
+                onClick={() =>
+                  this.handleSaveEdit(this.props.id, this.state.logContent)
+                }
+              >
+                save
+              </button>
+            </Grid>
+          )}
+
+          {!this.state.logInEditMode && (
+            <Grid item xs={1}>
+              <button onClick={this.handleEditLog}>
+                <FontAwesomeIcon icon={faEdit} />
+              </button>
+            </Grid>
+          )}
           <Grid item xs={1}>
             <button onClick={() => this.props.handleDeleteLog(this.props.id)}>
               <FontAwesomeIcon icon={faTimesCircle} />
@@ -50,7 +78,8 @@ class Log extends React.Component {
               className="test"
               aria-label="minimum height"
               rowsMin={8}
-              placeholder={this.props.content}
+              value={this.state.logContent}
+              onChange={this.handleEditingLog}
             />
           </form>
         )}

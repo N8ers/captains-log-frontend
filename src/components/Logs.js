@@ -24,6 +24,7 @@ class Logs extends React.Component {
             content={log.content}
             handleEditLog={this.props.handleEditLog}
             handleDeleteLog={this.props.handleDeleteLog}
+            handleEditLog={this.props.handleEditLog}
           />
         ))}
         <br />
