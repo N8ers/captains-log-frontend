@@ -25,6 +25,7 @@ class App extends React.Component {
     this.handleScrapLog = this.handleScrapLog.bind(this);
     this.handleStoreLog = this.handleStoreLog.bind(this);
     this.handleEditLog = this.handleEditLog.bind(this);
+    this.getAllLogs = this.getAllLogs.bind(this);
     this.loginUser = this.loginUser.bind(this);
   }
 
@@ -39,12 +40,16 @@ class App extends React.Component {
       userIsLoggedIn: !this.state.userIsLoggedIn
     });
     if (this.state.userIsLoggedIn) {
-      let res = await axios.get("http://localhost:5000/logs");
-      let logs = res.data;
-      this.setState({
-        dbLogs: logs
-      });
+      this.getAllLogs();
     }
+  };
+
+  getAllLogs = async () => {
+    let res = await axios.get("http://localhost:5000/logs");
+    let logs = res.data;
+    await this.setState({
+      dbLogs: logs
+    });
   };
 
   handleNewLogToggle() {
@@ -54,43 +59,74 @@ class App extends React.Component {
   }
 
   handleScrapLog() {
-    console.log("handleScrapLog called...");
     this.handleNewLogToggle();
   }
 
-  handleStoreLog(newLog) {
-    console.log("handleStoreLog called...");
-    let newLogs = this.state.dummyLogs.concat({
-      id: this.state.tempLogId,
-      starDate: Math.floor(Date.now() / 1000),
-      content: newLog
-    });
-    this.setState({
-      dummyLogs: newLogs,
-      tempLogId: this.state.tempLogId + 1
-    });
-    this.handleNewLogToggle();
-  }
-
-  handleDeleteLog(id) {
-    this.setState({
-      dummyLogs: this.state.dummyLogs.filter(log => log.id !== id)
-    });
-  }
-
-  handleEditLog(id, content) {
-    let oldLogs = this.state.dummyLogs;
-
-    for (let i = 0; i < oldLogs.length; i++) {
-      if (oldLogs[i].id === id) {
-        oldLogs[i].content = content;
-      }
+  handleStoreLog = async newLog => {
+    if (!this.state.userIsLoggedIn) {
+      let newLogs = this.state.dummyLogs.concat({
+        id: this.state.tempLogId,
+        starDate: Math.floor(Date.now() / 1000),
+        content: newLog
+      });
+      this.setState({
+        dummyLogs: newLogs,
+        tempLogId: this.state.tempLogId + 1
+      });
+      this.handleNewLogToggle();
     }
 
-    this.setState({
-      dummyLogs: oldLogs
-    });
-  }
+    if (this.state.userIsLoggedIn) {
+      await axios({
+        method: "post",
+        url: `http://localhost:5000/log`,
+        data: {
+          content: newLog,
+          starDate: Math.floor(Date.now() / 1000)
+        }
+      });
+      this.getAllLogs();
+      this.handleNewLogToggle();
+    }
+  };
+
+  handleDeleteLog = async id => {
+    if (!this.state.userIsLoggedIn) {
+      this.setState({
+        dummyLogs: this.state.dummyLogs.filter(log => log.id !== id)
+      });
+    }
+    if (this.state.userIsLoggedIn) {
+      await axios.delete(`http://localhost:5000/log/${id}`);
+      await this.getAllLogs();
+    }
+  };
+
+  handleEditLog = async (id, content) => {
+    if (!this.state.userIsLoggedIn) {
+      let oldLogs = this.state.dummyLogs;
+
+      for (let i = 0; i < oldLogs.length; i++) {
+        if (oldLogs[i].id === id) {
+          oldLogs[i].content = content;
+        }
+      }
+
+      this.setState({
+        dummyLogs: oldLogs
+      });
+    }
+    if (this.state.userIsLoggedIn) {
+      await axios({
+        method: "patch",
+        url: `http://localhost:5000/log/${id}`,
+        data: {
+          content: content
+        }
+      });
+      this.getAllLogs();
+    }
+  };
 
   render() {
     return (

@@ -16,7 +16,9 @@ class Logs extends React.Component {
           />
         )}
 
-        {/* this needs to be made async */}
+        {!this.props.loginStatus && (
+          <p>if you aren't logged in no data will be saved :)</p>
+        )}
 
         {this.props.loginStatus &&
           this.props.logs.length > 0 &&
