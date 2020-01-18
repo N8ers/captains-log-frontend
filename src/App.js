@@ -12,6 +12,7 @@ class App extends React.Component {
     this.state = {
       newLogClicked: false,
       userIsLoggedIn: false,
+      userid: "5e237d935f5bc44ba4bc3765",
       tempLogId: 4,
       dummyLogs: [
         { id: 1, starDate: 1677537989, content: "ahhhhhhhhhh" },
@@ -40,12 +41,12 @@ class App extends React.Component {
       userIsLoggedIn: !this.state.userIsLoggedIn
     });
     if (this.state.userIsLoggedIn) {
-      this.getAllLogs();
+      this.getAllLogs(this.state.userid);
     }
   };
 
-  getAllLogs = async () => {
-    let res = await axios.get("http://localhost:5000/logs");
+  getAllLogs = async userid => {
+    let res = await axios.get(`http://localhost:5000/logs/${userid}`);
     let logs = res.data;
     await this.setState({
       dbLogs: logs
@@ -82,10 +83,11 @@ class App extends React.Component {
         url: `http://localhost:5000/log`,
         data: {
           content: newLog,
-          starDate: Math.floor(Date.now() / 1000)
+          starDate: Math.floor(Date.now() / 1000),
+          userid: this.state.userid
         }
       });
-      this.getAllLogs();
+      this.getAllLogs(this.state.userid);
       this.handleNewLogToggle();
     }
   };
@@ -98,7 +100,7 @@ class App extends React.Component {
     }
     if (this.state.userIsLoggedIn) {
       await axios.delete(`http://localhost:5000/log/${id}`);
-      await this.getAllLogs();
+      await this.getAllLogs(this.state.userid);
     }
   };
 
@@ -124,7 +126,7 @@ class App extends React.Component {
           content: content
         }
       });
-      this.getAllLogs();
+      this.getAllLogs(this.state.userid);
     }
   };
 
