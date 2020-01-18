@@ -28,13 +28,19 @@ class App extends React.Component {
     this.loginUser = this.loginUser.bind(this);
   }
 
+  componentDidMount() {
+    if (this.state.userIsLoggedIn) {
+      this.loginUser();
+    }
+  }
+
   loginUser = async () => {
-    this.setState({
+    await this.setState({
       userIsLoggedIn: !this.state.userIsLoggedIn
     });
     if (this.state.userIsLoggedIn) {
       let res = await axios.get("http://localhost:5000/logs");
-      let [logs] = res.data;
+      let logs = res.data;
       this.setState({
         dbLogs: logs
       });
