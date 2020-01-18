@@ -31,7 +31,7 @@ class Logs extends React.Component {
 
         {/* this needs to be made async */}
 
-        {/* {this.props.loginStatus &&
+        {this.props.loginStatus &&
           this.props.logs.map(log => (
             <Log
               key={log.id}
@@ -42,8 +42,7 @@ class Logs extends React.Component {
               handleDeleteLog={this.props.handleDeleteLog}
               handleEditLog={this.props.handleEditLog}
             />
-          ))
-          } */}
+          ))}
         <br />
       </div>
     );

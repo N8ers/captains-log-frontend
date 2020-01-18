@@ -4,6 +4,10 @@ import "./Header.css";
 
 class Header extends React.Component {
   render() {
+    let logginStatus;
+    this.props.btnState.userIsLoggedIn
+      ? (logginStatus = "yes")
+      : (logginStatus = "no");
     return (
       <div className="header">
         <h1>Captain's Log</h1>
@@ -17,6 +21,7 @@ class Header extends React.Component {
 
         <div>
           <button onClick={this.props.loginUser}>Log In</button>
+          <span>loggedin: {logginStatus}</span>
         </div>
       </div>
     );

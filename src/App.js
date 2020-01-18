@@ -11,7 +11,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       newLogClicked: false,
-      userIsLoggedIn: true,
+      userIsLoggedIn: false,
       tempLogId: 4,
       dummyLogs: [
         { id: 1, starDate: 1677537989, content: "ahhhhhhhhhh" },
@@ -25,36 +25,21 @@ class App extends React.Component {
     this.handleScrapLog = this.handleScrapLog.bind(this);
     this.handleStoreLog = this.handleStoreLog.bind(this);
     this.handleEditLog = this.handleEditLog.bind(this);
-    this.getAllLogs = this.getAllLogs.bind(this);
     this.loginUser = this.loginUser.bind(this);
   }
 
-  loginUser() {
+  loginUser = async () => {
     this.setState({
       userIsLoggedIn: !this.state.userIsLoggedIn
     });
-    console.log("userIdLoggedIn: ", this.state.userIsLoggedIn);
-  }
-
-  getAllLogs() {
-    axios
-      .get("http://localhost:5000/logs")
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
-  componentWillMount() {
     if (this.state.userIsLoggedIn) {
-      let logs = this.getAllLogs();
+      let res = await axios.get("http://localhost:5000/logs");
+      let [logs] = res.data;
       this.setState({
         dbLogs: logs
       });
     }
-  }
+  };
 
   handleNewLogToggle() {
     this.setState({
