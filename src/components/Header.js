@@ -14,6 +14,10 @@ class Header extends React.Component {
         )}
 
         {this.props.btnState.newLogClicked && <div></div>}
+
+        <div>
+          <button onClick={this.props.loginUser}>Log In</button>
+        </div>
       </div>
     );
   }

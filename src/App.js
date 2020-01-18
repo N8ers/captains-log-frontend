@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import Header from "./components/Header";
 import Logs from "./components/Logs";
@@ -10,18 +11,49 @@ class App extends React.Component {
     super(props);
     this.state = {
       newLogClicked: false,
+      userIsLoggedIn: true,
       tempLogId: 4,
       dummyLogs: [
         { id: 1, starDate: 1677537989, content: "ahhhhhhhhhh" },
         { id: 2, starDate: 1479137234, content: "guhhhhhaj" },
         { id: 3, starDate: 1179137946, content: "asdfff" }
-      ]
+      ],
+      dbLogs: []
     };
     this.handleNewLogToggle = this.handleNewLogToggle.bind(this);
     this.handleDeleteLog = this.handleDeleteLog.bind(this);
     this.handleScrapLog = this.handleScrapLog.bind(this);
     this.handleStoreLog = this.handleStoreLog.bind(this);
     this.handleEditLog = this.handleEditLog.bind(this);
+    this.getAllLogs = this.getAllLogs.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+  }
+
+  loginUser() {
+    this.setState({
+      userIsLoggedIn: !this.state.userIsLoggedIn
+    });
+    console.log("userIdLoggedIn: ", this.state.userIsLoggedIn);
+  }
+
+  getAllLogs() {
+    axios
+      .get("http://localhost:5000/logs")
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
+
+  componentWillMount() {
+    if (this.state.userIsLoggedIn) {
+      let logs = this.getAllLogs();
+      this.setState({
+        dbLogs: logs
+      });
+    }
   }
 
   handleNewLogToggle() {
@@ -74,17 +106,35 @@ class App extends React.Component {
       <div>
         <Header
           newLogClicked={this.handleNewLogToggle}
+          loginUser={this.loginUser}
           btnState={this.state}
         ></Header>
-        <Logs
-          dummyLogs={this.state.dummyLogs}
-          btnState={this.state}
-          handleEditLog={this.handleEditLog}
-          handleDeleteLog={this.handleDeleteLog}
-          storeLog={this.handleStoreLog}
-          scrapLog={this.handleScrapLog}
-          editLog={this.handleEditLog}
-        ></Logs>
+
+        {this.state.userIsLoggedIn && (
+          <Logs
+            loginStatus={this.state.userIsLoggedIn}
+            logs={this.state.dbLogs}
+            btnState={this.state}
+            handleEditLog={this.handleEditLog}
+            handleDeleteLog={this.handleDeleteLog}
+            storeLog={this.handleStoreLog}
+            scrapLog={this.handleScrapLog}
+            editLog={this.handleEditLog}
+          ></Logs>
+        )}
+
+        {!this.state.userIsLoggedIn && (
+          <Logs
+            loginStatus={this.state.userIsLoggedIn}
+            logs={this.state.dummyLogs}
+            btnState={this.state}
+            handleEditLog={this.handleEditLog}
+            handleDeleteLog={this.handleDeleteLog}
+            storeLog={this.handleStoreLog}
+            scrapLog={this.handleScrapLog}
+            editLog={this.handleEditLog}
+          ></Logs>
+        )}
       </div>
     );
   }
