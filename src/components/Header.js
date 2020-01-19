@@ -5,10 +5,10 @@ import "./Header.css";
 
 class Header extends React.Component {
   render() {
-    let logginStatus;
-    this.props.btnState.userIsLoggedIn
-      ? (logginStatus = "yes")
-      : (logginStatus = "no");
+    // let logginStatus;
+    // this.props.btnState.userIsLoggedIn
+    //   ? (logginStatus = "yes")
+    //   : (logginStatus = "no");
     return (
       <div className="header">
         <h1>Captain's Log</h1>

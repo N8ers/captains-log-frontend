@@ -29,7 +29,9 @@ class Auth extends React.Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
     this.handleSigninSignupToggle = this.handleSigninSignupToggle.bind(this);
     this.testCredentials = this.testCredentials.bind(this);
-    this.handleFormSubmission = this.handleFormSubmission.bind(this);
+    this.handleSigninForm = this.handleSigninForm.bind(this);
+    this.handleSignupForm = this.handleSignupForm.bind(this);
+    this.submitNewUser = this.submitNewUser.bind(this);
   }
 
   handleOpenModal() {
@@ -49,23 +51,14 @@ class Auth extends React.Component {
     }
   }
 
-  handleFormSubmission(e) {
+  handleSigninForm(e) {
     e.preventDefault();
     let username = e.target.elements[0].value;
     let password = e.target.elements[1].value;
-
-    console.log("credentials", username, password);
-
-    if (this.state.form === "signin") {
-      this.testCredentials(username, password);
-    } else {
-      console.log("sign up");
-    }
+    this.testCredentials(username, password);
   }
 
   testCredentials = async (user, pw) => {
-    console.log(user, pw);
-    console.log(typeof user, typeof pw);
     let res;
     try {
       res = await axios({
@@ -80,6 +73,35 @@ class Auth extends React.Component {
       this.handleCloseModal();
     } catch {
       console.log("login failed");
+    }
+  };
+
+  handleSignupForm(e) {
+    e.preventDefault();
+    let username = e.target.elements[0].value;
+    let password = e.target.elements[1].value;
+    console.log("handleSignupForm: ", username, password);
+    this.submitNewUser(username, password);
+  }
+
+  submitNewUser = async (user, pw) => {
+    console.log(user, pw);
+    console.log(typeof user, typeof pw);
+    let res;
+    try {
+      res = await axios({
+        method: "get",
+        url: `http://localhost:5000/signup`,
+        headers: {
+          username: user,
+          password: pw
+        }
+      });
+      console.log("res: ", res);
+      this.props.handleSuccessfulLogin(res.data._id);
+      this.handleCloseModal();
+    } catch {
+      console.log("new user failed");
     }
   };
 
@@ -102,7 +124,7 @@ class Auth extends React.Component {
 
           {this.state.form === "signin" && (
             <Grid container spacing={3}>
-              <form onSubmit={this.handleFormSubmission}>
+              <form onSubmit={this.handleSigninForm}>
                 <div>
                   <label>
                     username
@@ -128,16 +150,20 @@ class Auth extends React.Component {
 
           {this.state.form === "signup" && (
             <Grid container spacing={3}>
-              <form>
+              <form onSubmit={this.handleSignupForm}>
                 <div>
-                  <span>SignUp</span>
-                  <input type="text" />
+                  <label>
+                    username
+                    <input name="username" type="text" />
+                  </label>
                 </div>
                 <div>
-                  <span>Password</span>
-                  <input type="password" />
+                  <label>
+                    password
+                    <input name="password" type="password" />
+                  </label>
                 </div>
-                <button>submit!</button>
+                <input type="submit" value="SignUp" />
                 <span>
                   <p>already have an account?</p>
                   <button onClick={this.handleSigninSignupToggle}>
