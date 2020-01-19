@@ -29,12 +29,20 @@ class App extends React.Component {
     this.getAllLogs = this.getAllLogs.bind(this);
     this.loginUser = this.loginUser.bind(this);
     this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
     if (this.state.userIsLoggedIn) {
       this.loginUser();
     }
+  }
+
+  handleLogout() {
+    this.setState({
+      userid: "",
+      userIsLoggedIn: false
+    });
   }
 
   handleSuccessfulLogin(id) {
@@ -147,6 +155,7 @@ class App extends React.Component {
           loginUser={this.loginUser}
           btnState={this.state}
           handleSuccessfulLogin={this.handleSuccessfulLogin}
+          handleLogout={this.handleLogout}
         ></Header>
 
         {this.state.userIsLoggedIn && (

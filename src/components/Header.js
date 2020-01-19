@@ -12,7 +12,9 @@ class Header extends React.Component {
     return (
       <div className="header">
         <h1>Captain's Log</h1>
-        {this.props.btnState.userIsLoggedIn && <button>logout</button>}
+        {this.props.btnState.userIsLoggedIn && (
+          <button onClick={this.props.handleLogout}>logout</button>
+        )}
         {!this.props.btnState.userIsLoggedIn && (
           <Auth handleSuccessfulLogin={this.props.handleSuccessfulLogin} />
         )}
@@ -25,13 +27,12 @@ class Header extends React.Component {
 
         {this.props.btnState.newLogClicked && <div></div>}
 
-        <hr />
-
-        <div>
+        {/* <div>
+          <hr />
           <p>just for dev</p>
           <button onClick={this.props.loginUser}>Log In</button>
           <span>loggedin: {logginStatus}</span>
-        </div>
+        </div> */}
       </div>
     );
   }
