@@ -17,7 +17,10 @@ class Logs extends React.Component {
         )}
 
         {!this.props.loginStatus && (
-          <p>if you aren't logged in no data will be saved :)</p>
+          <p>
+            you don't have to sign in to play with the app, but you do if you
+            want your data to be saved
+          </p>
         )}
 
         {this.props.loginStatus &&

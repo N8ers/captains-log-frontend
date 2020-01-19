@@ -28,12 +28,21 @@ class App extends React.Component {
     this.handleEditLog = this.handleEditLog.bind(this);
     this.getAllLogs = this.getAllLogs.bind(this);
     this.loginUser = this.loginUser.bind(this);
+    this.handleSuccessfulLogin = this.handleSuccessfulLogin.bind(this);
   }
 
   componentDidMount() {
     if (this.state.userIsLoggedIn) {
       this.loginUser();
     }
+  }
+
+  handleSuccessfulLogin(id) {
+    this.setState({
+      userid: id,
+      userIsLoggedIn: !this.state.userIsLoggedIn
+    });
+    this.getAllLogs(this.state.userid);
   }
 
   loginUser = async () => {
@@ -137,6 +146,7 @@ class App extends React.Component {
           newLogClicked={this.handleNewLogToggle}
           loginUser={this.loginUser}
           btnState={this.state}
+          handleSuccessfulLogin={this.handleSuccessfulLogin}
         ></Header>
 
         {this.state.userIsLoggedIn && (
