@@ -2,8 +2,12 @@ import React from "react";
 import ReactModal from "react-modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Button from "@material-ui/core/Button";
 import axios from "axios";
+
+import "./Auth.css";
 
 const customStyles = {
   content: {
@@ -22,7 +26,10 @@ class Auth extends React.Component {
     super(props);
     this.state = {
       showModal: false,
-      form: "signin"
+      form: "signin",
+      loading: false,
+      signinError: false,
+      signupError: false
     };
 
     this.handleOpenModal = this.handleOpenModal.bind(this);
@@ -45,9 +52,9 @@ class Auth extends React.Component {
   handleSigninSignupToggle(e) {
     e.preventDefault();
     if (this.state.form === "signin") {
-      this.setState({ form: "signup" });
+      this.setState({ form: "signup", signinError: false, signupError: false });
     } else {
-      this.setState({ form: "signin" });
+      this.setState({ form: "signin", signinError: false, signupError: false });
     }
   }
 
@@ -59,11 +66,15 @@ class Auth extends React.Component {
   }
 
   testCredentials = async (user, pw) => {
+    await this.setState({
+      loading: true,
+      signinError: false
+    });
     let res;
     try {
       res = await axios({
         method: "get",
-        url: `http://localhost:5000/signin`,
+        url: `https://captains-log-backend.herokuapp.com/signin`,
         headers: {
           username: user,
           password: pw
@@ -72,8 +83,13 @@ class Auth extends React.Component {
       this.props.handleSuccessfulLogin(res.data._id);
       this.handleCloseModal();
     } catch {
-      console.log("login failed");
+      this.setState({
+        signinError: true
+      });
     }
+    this.setState({
+      loading: false
+    });
   };
 
   handleSignupForm(e) {
@@ -85,13 +101,15 @@ class Auth extends React.Component {
   }
 
   submitNewUser = async (user, pw) => {
-    console.log(user, pw);
-    console.log(typeof user, typeof pw);
+    await this.setState({
+      loading: true,
+      signupError: false
+    });
     let res;
     try {
       res = await axios({
         method: "get",
-        url: `http://localhost:5000/signup`,
+        url: `https://captains-log-backend.herokuapp.com/signup`,
         headers: {
           username: user,
           password: pw
@@ -101,78 +119,136 @@ class Auth extends React.Component {
       this.props.handleSuccessfulLogin(res.data._id);
       this.handleCloseModal();
     } catch {
-      console.log("new user failed");
+      this.setState({
+        signupError: true
+      });
     }
+    this.setState({
+      loading: false
+    });
   };
 
   render() {
     return (
       <div>
-        <button onClick={this.handleOpenModal}>SignIn / SignUp</button>
+        <br />
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.handleOpenModal}
+        >
+          SignIn
+        </Button>
+
         <ReactModal
           isOpen={this.state.showModal}
           contentLabel="Minimal Modal Example"
           style={customStyles}
           ariaHideApp={false}
         >
-          <button className="exitModal" onClick={this.handleCloseModal}>
+          <Button
+            variant="contained"
+            color="secondary"
+            className="exitModal"
+            onClick={this.handleCloseModal}
+          >
             <FontAwesomeIcon icon={faTimesCircle} />
-          </button>
+          </Button>
 
-          {this.state.form === "signin" && <h1>SignIn</h1>}
-          {this.state.form === "signup" && <h1>SignUp</h1>}
+          <br />
 
           {this.state.form === "signin" && (
-            <Grid container spacing={3}>
-              <form onSubmit={this.handleSigninForm}>
-                <div>
-                  <label>
-                    username
-                    <input name="username" type="text" />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    password
-                    <input name="password" type="password" />
-                  </label>
-                </div>
-                <input type="submit" value="SignIn" />
-                <span>
-                  <p>don't have an account?</p>
-                  <button onClick={this.handleSigninSignupToggle}>
-                    SignUp!
-                  </button>
-                </span>
-              </form>
-            </Grid>
+            <h1 className="formheader">SignIn</h1>
+          )}
+          {this.state.signinError && (
+            <p className="p-error">incorrect credentials</p>
+          )}
+          {this.state.form === "signup" && (
+            <h1 className="formheader">SignUp</h1>
+          )}
+          {this.state.signupError && <p className="p-error">username taken</p>}
+
+          {this.state.form === "signin" && (
+            <form onSubmit={this.handleSigninForm}>
+              <div>
+                <label>
+                  <TextField
+                    id="standard-basic"
+                    name="username"
+                    type="text"
+                    placeholder="username"
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  <TextField
+                    id="standard-basic"
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                  />
+                </label>
+              </div>
+              <br />
+              {/* <input type="sub/mit" value="SignIn" /> */}
+              <Button variant="contained" color="primary" type="submit">
+                Sign In!
+              </Button>
+              <span>
+                <p>don't have an account?</p>
+                {/* <button onClick={this.handleSigninSignupToggle}>SignUp!</button> */}
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.handleSigninSignupToggle}
+                >
+                  Sign Up!
+                </Button>
+              </span>
+            </form>
           )}
 
           {this.state.form === "signup" && (
-            <Grid container spacing={3}>
-              <form onSubmit={this.handleSignupForm}>
-                <div>
-                  <label>
-                    username
-                    <input name="username" type="text" />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    password
-                    <input name="password" type="password" />
-                  </label>
-                </div>
-                <input type="submit" value="SignUp" />
-                <span>
-                  <p>already have an account?</p>
-                  <button onClick={this.handleSigninSignupToggle}>
-                    SignIn!
-                  </button>
-                </span>
-              </form>
-            </Grid>
+            <form onSubmit={this.handleSignupForm}>
+              <div>
+                <label>
+                  <TextField
+                    id="standard-basic"
+                    name="username"
+                    type="text"
+                    placeholder="username"
+                  />
+                </label>
+              </div>
+              <div>
+                <label>
+                  <TextField
+                    id="standard-basic"
+                    name="password"
+                    type="password"
+                    placeholder="password"
+                  />
+                </label>
+              </div>
+              <br />
+              {/* <input type="submit" value="SignUp" /> */}
+              <Button variant="contained" color="primary" type="submit">
+                Sign In!
+              </Button>
+              <span>
+                <p>already have an account?</p>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.handleSigninSignupToggle}
+                >
+                  Sign Up!
+                </Button>
+              </span>
+            </form>
           )}
+          {this.state.loading && <CircularProgress />}
         </ReactModal>
       </div>
     );

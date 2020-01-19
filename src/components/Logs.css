@@ -3,3 +3,9 @@
   margin: 0 auto;
   width: 50%;
 }
+
+.login-message {
+  background-color: rgba(255, 0, 0, 0.8);
+  color: white;
+  text-align: center;
+}

@@ -17,9 +17,10 @@ class Logs extends React.Component {
         )}
 
         {!this.props.loginStatus && (
-          <p>
-            you don't have to sign in to play with the app, but you do if you
-            want your data to be saved
+          <p className="login-message">
+            <span>you don't have to sign in to play with the app,</span>
+            <br />
+            <span>but you do if you want your data to be saved</span>
           </p>
         )}
 
@@ -53,8 +54,6 @@ class Logs extends React.Component {
               handleEditLog={this.props.handleEditLog}
             />
           ))}
-
-        <br />
       </div>
     );
   }

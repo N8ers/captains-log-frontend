@@ -1,0 +1,15 @@
+.exitModal {
+  float: right;
+}
+
+body {
+  text-align: center;
+}
+
+.formheader {
+  text-align: center;
+}
+
+.p-error {
+  color: red;
+}

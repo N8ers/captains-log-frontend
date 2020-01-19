@@ -1,4 +1,20 @@
 .header {
   text-align: center;
-  background-color: #ccc;
+  background-color: rgba(204, 204, 204, 0.7);
+}
+
+.header-content {
+  width: 60%;
+}
+
+@font-face {
+  font-family: voiceInMyHead;
+  src: url("../VoiceInMyHead.otf");
+}
+
+.title {
+  font-family: voiceInMyHead, sans-serif;
+  /* font-family: "Rambla", sans-serif; */
+  font-style: italic;
+  font-size: 40px;
 }

@@ -63,7 +63,9 @@ class App extends React.Component {
   };
 
   getAllLogs = async userid => {
-    let res = await axios.get(`http://localhost:5000/logs/${userid}`);
+    let res = await axios.get(
+      `https://captains-log-backend.herokuapp.com/logs/${userid}`
+    );
     let logs = res.data;
     await this.setState({
       dbLogs: logs
@@ -97,7 +99,7 @@ class App extends React.Component {
     if (this.state.userIsLoggedIn) {
       await axios({
         method: "post",
-        url: `http://localhost:5000/log`,
+        url: `https://captains-log-backend.herokuapp.com/log`,
         data: {
           content: newLog,
           starDate: Math.floor(Date.now() / 1000),
@@ -116,7 +118,9 @@ class App extends React.Component {
       });
     }
     if (this.state.userIsLoggedIn) {
-      await axios.delete(`http://localhost:5000/log/${id}`);
+      await axios.delete(
+        `https://captains-log-backend.herokuapp.com/log/${id}`
+      );
       await this.getAllLogs(this.state.userid);
     }
   };
@@ -138,7 +142,7 @@ class App extends React.Component {
     if (this.state.userIsLoggedIn) {
       await axios({
         method: "patch",
-        url: `http://localhost:5000/log/${id}`,
+        url: `https://captains-log-backend.herokuapp.com/log/${id}`,
         data: {
           content: content
         }

@@ -1,6 +1,7 @@
 import React from "react";
-
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import Button from "@material-ui/core/Button";
+
 import "./NewLog.css";
 
 class NewLog extends React.Component {
@@ -22,10 +23,20 @@ class NewLog extends React.Component {
     console.log(this.props);
     return (
       <div className="newFormBody">
-        <button onClick={() => this.props.storeLog(this.state.newLog)}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.props.storeLog(this.state.newLog)}
+        >
           Store Log
-        </button>
-        <button onClick={this.props.scrapLog}>Scrap Log</button>
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={this.props.scrapLog}
+        >
+          Scrap Log
+        </Button>
         <form>
           <TextareaAutosize
             className="test"
